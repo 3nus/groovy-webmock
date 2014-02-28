@@ -1,0 +1,36 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.5
+version = '0.1'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url 'http://repository.codehaus.org'
+    }
+}
+
+dependencies {
+
+    // ------------------------------------------------------------
+    // Core client
+    compile 'org.codehaus.groovy:groovy-all:2.2.0'
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+
+    // ------------------------------------------------------------
+    // Test specifics
+    testCompile 'junit:junit:4.11'
+
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.groupId = "org.${rootProject.name}"
+        pom.version = '0.1'
+        pom.artifactId = rootProject.name
+    }
+}
