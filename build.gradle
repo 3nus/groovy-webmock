@@ -20,17 +20,30 @@ dependencies {
     // Core client
     compile 'org.codehaus.groovy:groovy-all:2.2.0'
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+    compile 'junit:junit:4.11'
 
     // ------------------------------------------------------------
-    // Test specifics
+    // Test dependencies
     testCompile 'junit:junit:4.11'
 
 }
 
+// set up the maven install properties
 install {
     repositories.mavenInstaller {
         pom.groupId = "org.${rootProject.name}"
         pom.version = '0.1'
         pom.artifactId = rootProject.name
+    }
+}
+test {
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
     }
 }
