@@ -22,15 +22,16 @@ class MockAsyncHTTPBuilderTest extends GroovyTestCase {
 
     void test_assertPathWasRequested_assert_match() {
         def testpath = 'foo'
+        mock.targetPath = testpath
         mock.requestedPath = testpath
-        mock.assertPathWasRequested('foo')
+        mock.assertPathWasRequested()
     }
 
     void test_assertPathWasRequested_throws_RequestedPathException() {
-        def testpath = 'foo'
-        mock.requestedPath = testpath
+        mock.requestedPath = 'foo'
+        mock.targetPath = 'bar'
         shouldFail(RequestedPathException) {
-            mock.assertPathWasRequested('bar')
+            mock.assertPathWasRequested()
         }
     }
 
@@ -38,8 +39,18 @@ class MockAsyncHTTPBuilderTest extends GroovyTestCase {
         def testpath = 'foo'
         mock.stubApiGet(path: testpath, returns: new JsonSlurper().parseText('{"hi":"there"}'))
         mock.mockHTTP.use {
+            client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
+            mock.assertPathWasRequested()
+        }
+    }
+
+    void test_sub_api_get() {
+        def testpath = 'foo'
+        def response = new JsonSlurper().parseText('{"hi":"there"}')
+        mock.stubApiGet(path: testpath, returns: response)
+        mock.mockHTTP.use {
             def resp = client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
-            mock.assertPathWasRequested(testpath)
+            assertEquals(response, resp.get())
         }
     }
 

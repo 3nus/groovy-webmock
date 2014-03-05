@@ -36,6 +36,7 @@ install {
         pom.artifactId = rootProject.name
     }
 }
+
 test {
     // listen to events in the test execution lifecycle
     beforeTest { descriptor ->

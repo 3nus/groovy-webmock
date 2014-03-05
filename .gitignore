@@ -19,6 +19,7 @@ target/
 
 # Gradle
 .gradle/
+gradle/
 
 # Log directory
 logs/
