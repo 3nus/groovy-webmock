@@ -30,7 +30,7 @@ class ItemsTest extends GroovyTestCase {
     def testPath = 'foo'
     
     void test_sub_api_get_response_is_what_we_waid_it_should_be() {
-        stubApiGet(path: testpath, returns: expectedResponse)
+        stubApiGet(path: testPath, returns: expectedResponse)
         mockHTTP.use {
             def resp = client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
             assertEquals(expectedResponse, resp.get())
@@ -55,7 +55,7 @@ class ItemsTest extends GroovyTestCase {
     def mock = new MockAsyncHTTPBuilder()
     
     void test_sub_api_get_response_is_what_we_waid_it_should_be() {
-        mock.stubApiGet(path: testpath, returns: expectedResponse)
+        mock.stubApiGet(path: testPath, returns: expectedResponse)
         mock.mockHTTP.use {
             def resp = client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
             assertEquals(expectedResponse, resp.get())
