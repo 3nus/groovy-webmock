@@ -19,7 +19,7 @@ Mixin example
 
 The @Mixin annotation simplifies usage, but requires we specify the path when calling assertPathWasRequested().
 
-```
+```groovy
 import gwebmock.MockAsyncHTTPBuilder
 
 @Mixin(MockAsyncHTTPBuilder)
@@ -33,14 +33,7 @@ class ItemsTest extends GroovyTestCase {
         stubApiGet(path: testpath, returns: expectedResponse)
         mockHTTP.use {
             def resp = client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
-            assertEquals(response, resp.get())
-        }
-    }
-
-    void test_assertPathWasRequested_lets_us_make_sure_the_expected_path_was_requested() {
-        stubApiGet(path: testpath, returns: expectedResponse)
-        mockHTTP.use {
-            client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
+            assertEquals(expectedResponse, resp.get())
             assertPathWasRequested(testPath)
         }
     }
@@ -51,7 +44,7 @@ Class instance example
 
 Using a class instance simplifies calling assertPathWasRequested(), but is generally more cumbersome.
 
-```
+```groovy
 import gwebmock.MockAsyncHTTPBuilder
 
 class ItemsTest extends GroovyTestCase {
@@ -65,17 +58,11 @@ class ItemsTest extends GroovyTestCase {
         mock.stubApiGet(path: testpath, returns: expectedResponse)
         mock.mockHTTP.use {
             def resp = client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
-            assertEquals(response, resp.get())
-        }
-    }
-
-    void test_assertPathWasRequested_lets_us_make_sure_the_expected_path_was_requested() {
-        mock.stubApiGet(path: testpath, returns: expectedResponse)
-        mock.mockHTTP.use {
-            client.get(path: testpath, query: [foo: 'bar']) {resp, json -> json }
+            assertEquals(expectedResponse, resp.get())
             assertPathWasRequested()
         }
     }
+
 ```
 
 
