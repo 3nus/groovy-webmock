@@ -36,7 +36,19 @@ class MockAsyncHTTPBuilder{
         }
     }
 
+    // ---------------------------
+    // throw exception if we can't match target and requested paths
     def assertPathWasRequested() throws RequestedPathException {
+        if (targetPath != requestedPath) {
+            throw new RequestedPathException("Expected request to path '${targetPath}', was instead '${requestedPath}'")
+        }
+    }
+
+    // ---------------------------
+    // throw exception if we can't match target and requested paths
+    // if using a Mixin, the requestedPath class property will not be accessible (why is targetPath ok?)
+    // allow the requestedPath to be passed in for evaluation
+    def assertPathWasRequested(String requestedPath) throws RequestedPathException {
         if (targetPath != requestedPath) {
             throw new RequestedPathException("Expected request to path '${targetPath}', was instead '${requestedPath}'")
         }

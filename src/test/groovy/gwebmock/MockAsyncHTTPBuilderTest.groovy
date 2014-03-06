@@ -27,6 +27,21 @@ class MockAsyncHTTPBuilderTest extends GroovyTestCase {
         mock.assertPathWasRequested()
     }
 
+    void test_assertPathWasRequested_string_throws_RequestedPathException() {
+        mock.requestedPath = 'foo'
+        mock.targetPath = 'bar'
+        shouldFail(RequestedPathException) {
+            mock.assertPathWasRequested('foo')
+        }
+    }
+
+    void test_assertPathWasRequested_string_assert_match() {
+        def testpath = 'foo'
+        mock.targetPath = testpath
+        mock.requestedPath = testpath
+        mock.assertPathWasRequested('foo')
+    }
+
     void test_assertPathWasRequested_throws_RequestedPathException() {
         mock.requestedPath = 'foo'
         mock.targetPath = 'bar'
